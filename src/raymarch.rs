@@ -22,11 +22,11 @@ pub fn ray_march(screen: & mut Vec<u8>,height:usize,
 
             let i = (y * width + x) * 4;
 
-            while step < 20 && !hit{
+            while step < 50 && !hit{
 
                 let steplength = lowest_distance(shapes,&raypos);
                  
-                if steplength < 0.1 {
+                if steplength < 0.01 {
                     hit = true;
                 }
                 raypos = raypos.add(&dir, steplength);
