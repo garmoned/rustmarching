@@ -19,6 +19,7 @@ pub struct Camera {
     pub y_trans:f32,
     pub x_rotation:f32,
     pub y_rotation:f32,
+    pub new_changes:bool
 }
 
 
@@ -32,12 +33,8 @@ impl Camera {
             y_trans:0.0,
             x_rotation:0.0,
             y_rotation:0.0,
+            new_changes:true
         }
-    }
-
-
-    pub fn test(){
-        super::log("pressed button");
     }
 
 }
@@ -55,7 +52,17 @@ pub fn update_translation(tvec:&Vec3){
         z_trans:new_z,
         x_trans:new_x,
         y_trans:new_y,
+        new_changes:true,
         ..*data.clone()
     });
     
+}
+
+
+pub fn upated_changes(){
+    let mut data = CAM_STATE.lock().unwrap();
+    *data = Arc::new(Camera {
+        new_changes:true,
+        ..*data.clone()
+    });
 }

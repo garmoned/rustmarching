@@ -1,9 +1,10 @@
+
 use js_sys::*;
 use std::f64;
 use wasm_bindgen;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::*;
+use web_sys::{Navigator};
 
 use std::time::{SystemTime};
 
@@ -15,7 +16,7 @@ use futures_channel::oneshot;
 #[macro_use]
 extern crate lazy_static;
 
-
+mod pool;
 mod camera_state;
 mod common_funcs;
 mod linal;
@@ -24,7 +25,7 @@ mod shape;
 mod scene;
 mod init_context;
 
-use shape::Shape;
+use shape as Shape;
 use linal::Vec3;
 
 fn window() -> web_sys::Window {
@@ -64,6 +65,9 @@ extern "C" {
 
 pub fn start() {
 
+    //let max_workers = window().navigator().hardware_concurrency() as usize;
+
+   // let pool = pool::WorkerPool::new(max_workers).unwrap();
 
     let perform = web_sys::window()
     .expect("should have window here")
@@ -73,11 +77,9 @@ pub fn start() {
     let mut shape_vec = Vec::new();
 
     shape_vec.push(
-        Shape::new(
+        Shape::Shape::Spheres(
         Vec3::new(1.0,1.0,1.0), 
-        Vec3::new(0.0, 0.0, 0.0), 
-        0.5432, 
-        "circle"));
+        0.5432));
 
     let sc = scene::Scene::new(shape_vec);
 
@@ -107,7 +109,11 @@ pub fn start() {
             last_draw_time = curr_time;
             let c = curr_time as f32 / 3000.0;
             
-            sc.render(camera,&mut screen);
+           //if camera.new_changes {
+            //sc.render(camera,&pool,max_workers);
+            //log("finished redrawing");
+            //camera_state::upated_changes()
+           //} 
         }
 
         request_animation_frame(f.borrow().as_ref().unwrap());

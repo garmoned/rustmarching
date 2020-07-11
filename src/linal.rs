@@ -30,7 +30,6 @@ impl Vec3 {
     }
 
     pub fn add(&self,vec:&Vec3,mult:f32) -> Vec3 {  
-
         let newVec = Vec3::new(self.x+vec.x*mult, self.y+vec.y*mult, self.z+vec.z*mult);
         return newVec;
     }
