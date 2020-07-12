@@ -9,6 +9,14 @@ use wasm_bindgen::JsValue;
 
 use super::init_context::init_context;
 
+
+
+
+//use rayon::prelude::*;
+
+
+
+
 pub struct Scene {
     shapes:Vec<Shape>,
     ctx:CanvasRenderingContext2d
