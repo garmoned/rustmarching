@@ -29,6 +29,10 @@ impl Vec3 {
         return uvec;
     }
 
+    pub fn mag(&self) -> f32 {
+        return self.x.powf(2.0) +self.y.powf(2.0) + self.z.powf(2.0);
+    }
+
     pub fn add(&self,vec:&Vec3,mult:f32) -> Vec3 {  
 
         let newVec = Vec3::new(self.x+vec.x*mult, self.y+vec.y*mult, self.z+vec.z*mult);
@@ -41,6 +45,15 @@ impl Vec3 {
         modulo(self.y, constant), 
         modulo(self.z, constant));
         return new_vec;
+    }
+
+    pub fn dot(&self,vec:&Vec3) -> f32{
+
+        return self.x * vec.x + self.y * vec.y + self.z * vec.z;
+    }
+
+    pub fn mult(&self, c:f32 ) -> Vec3{
+        return Vec3::new(self.x*c, self.y*c, self.z*c);
     }
 
 }

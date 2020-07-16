@@ -73,31 +73,33 @@ pub fn start() {
     let mut shape_vec = Vec::new();
 
     shape_vec.push(
-        Shape::new(
-        Vec3::new(1.0,1.0,1.0), 
-        Vec3::new(0.0, 0.0, 0.0), 
-        0.5432, 
-        "circle"));
+    Shape::Cube(Vec3::new(1.0, 0.0,1.5),0.543));
+
+
+    shape_vec.push(
+        Shape::Sphere(Vec3::new(0.0, 0.0, 1.0),0.543));
+
+
+    shape_vec.push(
+        Shape::Sphere(Vec3::new(0.0, 1.0, 1.0),0.543));
+
 
     let sc = scene::Scene::new(shape_vec);
 
     let mut screen:Vec<u8> = Vec::new();
     
     for _i in 0..4*400*300 {
-
         screen.push(0)
-
     }
 
-    let f = Rc::new(RefCell::new(None));
+    /*let f = Rc::new(RefCell::new(None));
     let g = f.clone();
 
     let fps_throttle = (1000.0 / 30.0) as f64;
 
-    let mut last_draw_time:f64 = -1.0;
+    let mut last_draw_time:f64 = - 1.0;
 
     *g.borrow_mut() = Some(Closure::wrap(Box::new(move || {
-       
         
         let camera = camera_state::get_curr_cam_state();
 
@@ -115,8 +117,10 @@ pub fn start() {
     }) as Box<dyn FnMut()>));
 
     request_animation_frame(g.borrow().as_ref().unwrap());
+    */
 
-
+    let camera = camera_state::get_curr_cam_state();
+    sc.render(camera,&mut screen);
 }
 
 
