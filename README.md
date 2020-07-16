@@ -6,6 +6,4 @@ thought the best way to do this would be rendering some nice 3d spheres with a r
 
 really cool development experience
 
-still actually deploy to a server instead of just locally
-
-also need to use webworkers to parallelize the rendering or wait for rust-wasm to support multithreading
+https://glacial-shore-54651.herokuapp.com/ <---- try it out here!!
