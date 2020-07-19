@@ -81,7 +81,7 @@ fn set_pixel_color(
     let mut lights = vec![];
 
     lights.push(Vec3::new(0.0, -2.0, 1.0));
-    lights.push(Vec3::new(-1.5, -1.0, 1.0));
+ 
  
 
     let amb = 20;

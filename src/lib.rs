@@ -66,8 +66,6 @@ pub fn start() {
 
     shape_vec.push(Shape::Sphere(Vec3::new(-1.5, 0.0, 1.5), 0.3));
 
-    shape_vec.push(Shape::Spheres(Vec3::new(1.0, 1.0, 1.0), 0.543));
-
     let sc = scene::Scene::new(shape_vec);
 
     let mut screen: Vec<u8> = Vec::new();
