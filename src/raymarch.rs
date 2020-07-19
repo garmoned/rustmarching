@@ -84,7 +84,7 @@ fn set_pixel_color(
  
  
 
-    let amb = 20;
+    let amb = 50;
 
     if hit {
      
