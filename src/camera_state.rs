@@ -1,4 +1,4 @@
-use super::linal::Vec3;
+use super::linal::{Vec3,Matrix};
 use std::sync::Arc;
 use std::sync::Mutex;
 
@@ -17,7 +17,6 @@ pub struct Camera {
     pub z_trans:f32,
     pub x_trans:f32,
     pub y_trans:f32,
-    pub x_rotation:f32,
     pub y_rotation:f32,
 }
 
@@ -30,7 +29,6 @@ impl Camera {
             z_trans:0.0,
             x_trans:0.0,
             y_trans:0.0,
-            x_rotation:0.0,
             y_rotation:0.0,
         }
     }
@@ -42,13 +40,29 @@ impl Camera {
 
 }
 
+pub fn update_rotation(rot_amt:f32){
+    let mut data = CAM_STATE.lock().unwrap();
+
+    let new_rot = data.y_rotation + rot_amt;
+    
+    super::log_f32(new_rot);
+
+    *data = Arc::new(Camera {
+        y_rotation:new_rot,
+        ..*data.clone()
+    });
+    
+}
 
 pub fn update_translation(tvec:&Vec3){
     let mut data = CAM_STATE.lock().unwrap();
 
-    let new_x = tvec.x + data.x_trans;
-    let new_y = tvec.y + data.y_trans;
-    let new_z = tvec.z + data.z_trans;
+    let mat = Matrix::new_rot(data.y_rotation);
+    let vec = mat.mult(tvec);
+
+    let new_x = vec.x + data.x_trans;
+    let new_y = vec.y + data.y_trans;
+    let new_z = vec.z + data.z_trans;
 
 
     *data = Arc::new(Camera {

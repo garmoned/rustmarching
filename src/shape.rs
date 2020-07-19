@@ -25,14 +25,13 @@ fn spheres_dist(sphere_loc:&Vec3,location:&Vec3,radius:&f32)->f32{
 }
 
 fn cube_dist(cube_loc:&Vec3,loc:&Vec3,len:&f32) -> f32 {
+    
 
     let dist = Vec3::new(
         (loc.x - cube_loc.x).abs()  - len, 
         (loc.y -  cube_loc.y).abs()  - len, 
         (loc.z - cube_loc.z).abs() - len
     );
-
-   
 
     return dist.x.max(dist.y.max(dist.z).max(0.0));
 

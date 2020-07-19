@@ -3,8 +3,10 @@ use wasm_bindgen::*;
 use wasm_bindgen::prelude::*;
 use super::linal::Vec3;
 use super::camera_state::update_translation;
+use super::camera_state::update_rotation;
 
 const MOVE_SPEED:f32 = 0.3;
+const ROT_SPEED:f32 = 0.2;
 
 pub fn init_context() -> Result<web_sys::CanvasRenderingContext2d,JsValue>{
 
@@ -41,6 +43,8 @@ fn handle_key(key:&str){
         "a" => update_translation(&Vec3::new(-MOVE_SPEED,0.0,0.0)),
         "s" => update_translation(&Vec3::new(0.0,0.0,-MOVE_SPEED)),
         "d" => update_translation(&Vec3::new(MOVE_SPEED,0.0,0.0)),
+        "ArrowLeft" => update_rotation(-ROT_SPEED),
+        "ArrowRight" => update_rotation(ROT_SPEED),
          _ => super::log(key)
     }
 
