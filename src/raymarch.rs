@@ -1,9 +1,9 @@
 use super::camera_state::Camera;
-use super::linal::{Vec3,Matrix};
+use super::linal::{Matrix, Vec3};
 use super::shape;
 use super::shape::Shape;
+use std::cmp::min;
 use std::sync::Arc;
-use std::cmp::{max};
 
 pub fn ray_march(
     screen: &mut Vec<u8>,
@@ -13,7 +13,7 @@ pub fn ray_march(
     camera: &Arc<Camera>,
 ) {
     let rot_mat = Matrix::new_rot(camera.y_rotation);
-    let cam_trans = Vec3::new(camera.x_trans,camera.y_trans,camera.z_trans);
+    let cam_trans = Vec3::new(camera.x_trans, camera.y_trans, camera.z_trans);
 
     for x in 0..width {
         for y in 0..height {
@@ -22,14 +22,9 @@ pub fn ray_march(
             let xpos = (x as f32 - ((width / 2) as f32)) / height as f32;
             let ypos = (y as f32 - ((height / 2) as f32)) / height as f32;
 
-            let raypos = Vec3::new(
-                xpos,
-                ypos,
-                1.0
-            );
+            let raypos = Vec3::new(xpos, ypos, 1.0);
 
             let raypos = rot_mat.mult(&raypos);
-            
             let dir = raypos.unit();
 
             let mut raypos = raypos.add(&cam_trans, 1.0);
@@ -76,18 +71,19 @@ fn set_pixel_color(
     let mut g: u8 = 0;
     let mut b: u8 = 0;
 
-    let eps = 0.01;
+    let eps = 0.001;
 
     let mut lights = vec![];
 
-    lights.push(Vec3::new(0.0, -2.0, 1.0));
- 
- 
+    lights.push(Vec3::new(-5.0, -2.0, 1.0));
+    lights.push(Vec3::new(5.0, -2.0, -1.0));
 
-    let amb = 50;
+    let amb = 100;
+
+    let dif = 100.0/lights.len() as f32;
+    let spc = 115.0/lights.len() as f32;
 
     if hit {
-     
         let norm_vec = Vec3::new(
             lowest_distance(shapes, &Vec3::new(pos.x + eps, pos.y, pos.z))
                 - lowest_distance(shapes, &Vec3::new(pos.x - eps, pos.y, pos.z)),
@@ -108,20 +104,44 @@ fn set_pixel_color(
                 )
                 .unit();
 
-            let spec = reflection.dot(&pos.unit()).powf(2.0) * 30.0;
-            let diffusion = max((norm_vec.dot(&lvec) * 90.0) as u8,0);
+            let spec = reflection.dot(&pos.unit()).powf(2.0) * dif;
+            let diffusion = (norm_vec.dot(&lvec) * spc).max(0.0);
+            let shad = shadow(&pos, &lvec, shapes);
+            let diffusion = diffusion;
+            let spec = spec * shad;
 
             r += spec as u8;
             g += spec as u8;
-            b += amb;
             b += diffusion as u8;
             b += spec as u8;
         }
-        r += amb;
+
+        //ambient lighting
+        r+= 50;
     }
 
-    screen[i + 0] = r;
-    screen[i + 1] = g;
-    screen[i + 2] = b;
+    screen[i + 0] = min(r, 255);
+    screen[i + 1] = min(g, 255);
+    screen[i + 2] = min(b, 255);
     screen[i + 3] = 255;
+}
+
+fn shadow(pos: &Vec3, lvec: &Vec3, shapes: &Vec<Shape>) -> f32 {
+    let mut shad_pos = Vec3::new(pos.x, pos.y, pos.z).add(lvec, 0.05);
+
+    let mut dist = lowest_distance(shapes, &shad_pos);
+    let mut travel = 0.0;
+
+    while travel < 5.0 {
+        shad_pos = shad_pos.add(lvec, dist);
+        dist = lowest_distance(shapes, &shad_pos);
+
+        if dist < 0.01 {
+            return 0.0;
+        }
+
+        travel += dist;
+    }
+
+    return 1.0;
 }

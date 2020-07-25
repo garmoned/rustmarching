@@ -26,6 +26,25 @@ impl Matrix {
         Self { mat: mat }
     }
 
+
+    pub fn new_rot_z(rad: f32) -> Self {
+        let mat = [
+            rad.cos(),
+            -rad.sin(),
+            0.0,
+
+            rad.sin(),
+            rad.cos(),
+            0.0,
+
+            0.0,
+            0.0,
+            1.0,
+        ];
+        Self { mat: mat }
+    }
+
+
     pub fn mult(&self,vec:&Vec3)-> Vec3 {
         return Vec3::new(
             vec.x*self.mat[0] + vec.y*self.mat[1] + vec.z*self.mat[2], 

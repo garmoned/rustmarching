@@ -62,9 +62,10 @@ pub fn start() {
 
     let mut shape_vec = Vec::new();
 
-    shape_vec.push(Shape::Cube(Vec3::new(1.0, 0.0, 1.5), 0.543));
-
-    shape_vec.push(Shape::Sphere(Vec3::new(-1.5, 0.0, 1.5), 0.3));
+    shape_vec.push(Shape::Cube(Vec3::new(0.0, 0.0, 0.0), 0.543));
+    shape_vec.push(Shape::Plane(Vec3::new(0.0,-1.0,0.0),Vec3::new(0.0, 1.0, 0.0)));
+   // shape_vec.push(Shape::Sphere(Vec3::new(-1.0, 0.0, 1.5), 0.543));
+    //shape_vec.push(Shape::Sphere(Vec3::new(-1.5, 0.0, 1.5), 0.3));
 
     let sc = scene::Scene::new(shape_vec);
 

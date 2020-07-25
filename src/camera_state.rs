@@ -26,7 +26,7 @@ impl Camera {
     pub fn new() -> Self {
         Self{
             dist_from_cam:0.0,
-            z_trans:-1.0,
+            z_trans:-3.0,
             x_trans:0.0,
             y_trans:0.0,
             y_rotation:0.0,
